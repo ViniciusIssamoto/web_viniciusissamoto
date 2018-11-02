@@ -4,12 +4,15 @@ var circleB;
 var FPS = 1000/75;
 var colision = false;
 
+
 window.onload = function (){
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
     
-    width = canvas.offsetWidth;
-    height = canvas.offsetHeight;    
+    width = window.innerWidth;
+    height = window.innerHeight;  
+    canvas.width = width;
+    canvas.height = width;
     
     circleB = {x: width/2,
                y: height/2,
@@ -17,19 +20,19 @@ window.onload = function (){
                color: "#00f"};
     
     canvas.addEventListener("mousemove", changepos, true);
-    
+    window.addEventListener('resize', resizeCanvas, false);
     setInterval(gameloop, FPS);
     
 }
 
-
 //---------- LOOP ---------------------------
 function gameloop (){
-    update();
+    resizeCanvas();
+    updateGame();
     draw();    
 }
 
-function update(){
+function updateGame(){
     colision = detectCollision(circleA, circleB);
 //    if(colision) canvas.style.backgroundColor = "#FFF";
 //    else canvas.style.backgroundColor = "#7b7b7b";
@@ -64,4 +67,14 @@ function drawCircle ( circle ){
     else ctx.strokeStyle = circle.color
     ctx.arc(circle.x, circle.y, circle.radius, 0, 2*Math.PI);
     ctx.stroke();
+}
+
+function resizeCanvas()
+{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight*0.5;
+    
+    ctx.strokeStyle = 'blue';
+    ctx.lineWidth = '5';
+    ctx.strokeRect(0, 0, window.innerWidth, window.innerHeight);
 }
